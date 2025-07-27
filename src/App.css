@@ -1,7 +1,7 @@
 .topic-buttons {
   display: flex;
   justify-content: center;
-  gap: 1rem;      /* ← space between each button */
+  gap: 1rem; /* space between each button */
   padding: 15px;
   flex-wrap: wrap;
 }

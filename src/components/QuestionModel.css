@@ -22,3 +22,11 @@ button:focus-visible {
   outline: none;
   border-color: #3b82f6; /* optional accent */
 }
+
+.options {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;      /* ← space between each button */
+  padding: 15px;
+  flex-wrap: wrap;
+}

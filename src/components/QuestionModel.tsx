@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import * as XLSX from 'xlsx'
+import './QuestionModel.css'
 
 type OptionKey = 'A' | 'B' | 'C' | 'D'
 

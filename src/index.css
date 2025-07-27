@@ -13,14 +13,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
 body {
   margin: 0;
   display: flex;
@@ -32,27 +24,18 @@ body {
   min-height: 100vh;
 }
 
-button {
-  border-radius: 12px;
-  padding: 0.75em 1.5em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background: rgba(255, 255, 255, 0.05);
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-button:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-1px);
-}
-
-button:focus,
-button:focus-visible {
-  outline: none;
-  border-color: #3b82f6; /* optional accent */
+h2 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }

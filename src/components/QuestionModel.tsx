@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import * as XLSX from 'xlsx'
 import './QuestionModel.css'
+import { MathJax, MathJaxContext } from 'better-react-mathjax'
+
 
 type OptionKey = 'A' | 'B' | 'C' | 'D'
 
@@ -16,6 +18,16 @@ interface Question {
 
 interface Props {
   topicName: string
+}
+
+const mathConfig = {
+  loader: { load: ['[tex]/autoload', '[tex]/ams'] },
+  tex: {
+    // these are the delimiters MathJax will look for
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    packages: { '[+]': ['autoload', 'ams'] },
+  }
 }
 
 export default function QuestionModel({ topicName }: Props) {
@@ -69,39 +81,47 @@ export default function QuestionModel({ topicName }: Props) {
   if (!questions.length) return <div>Error, sorry</div>
   const q = questions[currentIndex]
 
-  return (
-    <div className="question-model">
-      <h2>{q.Question}</h2>
-      {/* Display question number and total count */}
-      <p className="counter">
-          {currentIndex + 1}/{questions.length}
-      </p>
+ return (
+    <MathJaxContext config={mathConfig}>
+      <div className="question-model">
+        {/* QUESTION (uses display mode by default) */}
+        <h2><MathJax dynamic>{q.Question}</MathJax></h2>
 
-      <div className="options">
-        {(['A','B','C','D'] as OptionKey[]).map(opt => (
-          <button
-            key={opt}
-            onClick={() => handleClick(opt)}
-            className={getClass(opt)}
-          >
-            {q[opt]}
-          </button>
-        ))}
-      </div>
+        <p className="counter">{currentIndex + 1}/{questions.length}</p>
 
-      {answered && (
-        <div className="feedback">
-          {selected === q['Correct Option']
-            ? <p className="you-got-it">🎉 Correct!</p>
-            : <p className="you-missed">❌ Nope. It was: {q[q['Correct Option']]}</p>
-          }
-
-          {/* pull explanation */}
-          <p className="explanation">{q.Explanation}</p>
-
-          <button onClick={nextQuestion}>Next</button>
+        {/* OPTIONS (inline mode) */}
+        <div className="options">
+          {(['A','B','C','D'] as OptionKey[]).map(opt => (
+            <button
+              key={opt}
+              onClick={() => handleClick(opt)}
+              className={getClass(opt)}
+            >
+              <MathJax dynamic inline>
+                {q[opt]}
+              </MathJax>
+            </button>
+          ))}
         </div>
-      )}
-    </div>
+
+        {answered && (
+          <div className="feedback">
+            {selected === q['Correct Option']
+              ? <p className="you-got-it">🎉 Correct!</p>
+              : <p className="you-missed">
+                  ❌ Nope. It was:&nbsp;
+                  <MathJax dynamic inline>{q[q['Correct Option']]}</MathJax>
+                </p>
+            }
+            <p className="explanation">
+              <MathJax dynamic inline>
+                {q.Explanation}
+              </MathJax>
+            </p>
+            <button onClick={nextQuestion}>Next</button>
+          </div>
+        )}
+      </div>
+    </MathJaxContext>
   )
 }

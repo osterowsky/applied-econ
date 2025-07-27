@@ -38,7 +38,7 @@ export default function App() {
       ) : (
         // Quiz for the chosen topic
         <div>
-          <h1>Applied Econometrics</h1>
+          <h1>{topicName}</h1>
           <QuestionModel topicName={topicName} />
         </div>
       )}

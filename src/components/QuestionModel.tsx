@@ -58,6 +58,11 @@ export default function QuestionModel() {
   return (
     <div className="question-model">
       <h2>{q.Question}</h2>
+      {/* Display question number and total count */}
+      <p className="counter">
+          {currentIndex + 1}/{questions.length}
+      </p>
+
       <div className="options">
         {(['A','B','C','D'] as OptionKey[]).map(opt => (
           <button

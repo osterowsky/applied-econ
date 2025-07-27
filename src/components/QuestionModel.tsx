@@ -14,7 +14,11 @@ interface Question {
   Explanation: string
 }
 
-export default function QuestionModel() {
+interface Props {
+  topicName: string
+}
+
+export default function QuestionModel({ topicName }: Props) {
   const [questions,    setQuestions]   = useState<Question[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selected,     setSelected]     = useState<OptionKey | null>(null)
@@ -23,15 +27,25 @@ export default function QuestionModel() {
   useEffect(() => {
     async function loadSheet() {
       const res = await fetch('/econometrics_questions.xlsx')
-      if (!res.ok) return console.error(res.statusText)
-      const buf      = await res.arrayBuffer()
-      const wb       = XLSX.read(buf, { type: 'array' })
-      const sheet    = wb.Sheets[wb.SheetNames[0]]
-      const data     = XLSX.utils.sheet_to_json<Question>(sheet)
+      const buf = await res.arrayBuffer()
+      const wb  = XLSX.read(buf, { type: 'array' })
+
+      // grab the sheet by the exact name the user clicked
+      const ws = wb.Sheets[topicName]
+      if (!ws) {
+        console.error(`No sheet called “${topicName}”`)
+        setQuestions([])
+        return
+      }
+
+      const data = XLSX.utils.sheet_to_json<Question>(ws)
       setQuestions(data)
+      setCurrentIndex(0)
+      setSelected(null)
+      setAnswered(false)
     }
     loadSheet()
-  }, [])
+  }, [topicName])
 
   const handleClick = (opt: OptionKey) => {
     if (answered) return
@@ -52,7 +66,7 @@ export default function QuestionModel() {
     setAnswered(false)
   }
 
-  if (!questions.length) return <div>Loading…</div>
+  if (!questions.length) return <div>Error, sorry</div>
   const q = questions[currentIndex]
 
   return (

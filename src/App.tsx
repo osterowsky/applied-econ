@@ -5,7 +5,7 @@ function App() {
 
   return (
     <div id="app">
-      <h1>Applied Economics</h1>
+      <h1>Applied Econometrics</h1>
       <QuestionModel />
     </div>
   )

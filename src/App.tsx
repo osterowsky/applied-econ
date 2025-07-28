@@ -18,6 +18,10 @@ const TOPICS = [
 export default function App() {
   const [topicName, setTopicName] = useState<string | null>(null)
 
+  const handleDone = () => {
+    setTopicName(null)
+  }
+
   return (
     <div id="app">
       {topicName === null ? (
@@ -39,7 +43,7 @@ export default function App() {
         // Quiz for the chosen topic
         <div>
           <h1>{topicName}</h1>
-          <QuestionModel topicName={topicName} />
+          <QuestionModel topicName={topicName} onDone={handleDone} />
         </div>
       )}
     </div>

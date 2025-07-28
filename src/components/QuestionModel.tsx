@@ -18,6 +18,7 @@ interface Question {
 
 interface Props {
   topicName: string
+  onDone: () => void
 }
 
 const mathConfig = {
@@ -30,11 +31,12 @@ const mathConfig = {
   }
 }
 
-export default function QuestionModel({ topicName }: Props) {
+export default function QuestionModel({ topicName, onDone }: Props) {
   const [questions,    setQuestions]   = useState<Question[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selected,     setSelected]     = useState<OptionKey | null>(null)
   const [answered,     setAnswered]     = useState(false)
+  const [score,        setScore]        = useState(0)
 
   useEffect(() => {
     async function loadSheet() {
@@ -71,6 +73,10 @@ export default function QuestionModel({ topicName }: Props) {
     if (answered) return
     setSelected(opt)
     setAnswered(true)
+
+    if (opt === questions[currentIndex]['Correct Option']) {
+      setScore(s => s + 1)
+    }
   }
 
   const getClass = (opt: OptionKey) => {
@@ -87,6 +93,21 @@ export default function QuestionModel({ topicName }: Props) {
   }
 
   if (!questions.length) return <div>Error, sorry</div>
+
+  // if we've stepped past the last index, show results
+  if (currentIndex >= questions.length) {
+    return (
+      <div className="results">
+        <p>Achieved points: {score} / {questions.length}</p>
+        <button onClick={onDone}>
+          Back to Topics
+        </button>
+      </div>
+    )
+  }
+
+  if (!questions.length) return <div>Error, sorry</div>
+
   const q = questions[currentIndex]
 
  return (

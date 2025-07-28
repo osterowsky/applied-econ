@@ -92,7 +92,7 @@ export default function QuestionModel({ topicName, onDone }: Props) {
     setAnswered(false)
   }
 
-  if (!questions.length) return <div>Error, sorry</div>
+  if (!questions.length) return <div>No questions</div>
 
   // if we've stepped past the last index, show results
   if (currentIndex >= questions.length) {

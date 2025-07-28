@@ -11,8 +11,6 @@ const TOPICS = [
   'Omitted Variables and Panel Data Estimation',
   'Program Evaluation & Potential Outcomes',
   '2SLS',
-  'Paper: \"Children and their parents labor supply: Evidence from exogenous variation in family size.\"',
-  'Paper: \"Generalized random forests.\"',
 ]
 
 export default function App() {

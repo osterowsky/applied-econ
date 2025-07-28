@@ -42,14 +42,22 @@ export default function QuestionModel({ topicName }: Props) {
       const buf = await res.arrayBuffer()
       const wb  = XLSX.read(buf, { type: 'array' })
 
-      // grab the sheet by the exact name the user clicked
-      const ws = wb.Sheets[topicName]
-      if (!ws) {
-        console.error(`No sheet called “${topicName}”`)
+      // find the sheet which (possibly truncated, as excel have char limit) name matches the start of topicName
+      const sheetNames = wb.SheetNames
+      // sort by length descending so longer names are tried first
+      sheetNames.sort((a, b) => b.length - a.length)
+      const matched = sheetNames.find(name =>
+        // Excel sheet names are a prefix of the original topic, up to 31 chars
+        topicName.startsWith(name)
+      )
+
+      if (!matched) {
+        console.error(`No sheet matching “${topicName}”`)
         setQuestions([])
         return
       }
 
+      const ws = wb.Sheets[matched]
       const data = XLSX.utils.sheet_to_json<Question>(ws)
       setQuestions(data)
       setCurrentIndex(0)
